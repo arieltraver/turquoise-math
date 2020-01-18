@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>Vector.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Vector.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">math </span><span class="s0">import </span><span class="s1">acos</span>
+
+
+<span class="s0">class </span><span class="s1">Vector:</span>
+    <span class="s2">&quot;&quot;&quot;A standard vector with components i, j, and k. If you want only xy vectors, set k to 0.&quot;&quot;&quot;</span>
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">, </span><span class="s1">i</span><span class="s0">, </span><span class="s1">j</span><span class="s0">, </span><span class="s1">k):</span>
+        <span class="s1">self.i</span><span class="s0">, </span><span class="s1">self.j</span><span class="s0">, </span><span class="s1">self.k = i</span><span class="s0">, </span><span class="s1">j</span><span class="s0">, </span><span class="s1">k</span>
+
+    <span class="s0">def </span><span class="s1">__add__(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Adding another vector to your vector. You can use the + symbol.&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">Vector(</span>
+            <span class="s1">self.i + other.i</span><span class="s0">,</span>
+            <span class="s1">self.j + other.j</span><span class="s0">,</span>
+            <span class="s1">self.k + other.k</span>
+        <span class="s1">)</span>
+
+    <span class="s0">def </span><span class="s1">__sub__(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Subtracting another vector from your vector. You can use the - symbol.&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">Vector(</span>
+            <span class="s1">self.i - other.i</span><span class="s0">,</span>
+            <span class="s1">self.j - other.j</span><span class="s0">,</span>
+            <span class="s1">self.k - other.k</span>
+        <span class="s1">)</span>
+
+    <span class="s0">def </span><span class="s1">__mul__(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Multiplying a vector by a constant (scalar). Not two vectors!&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">Vector(</span>
+            <span class="s1">self.i * other</span><span class="s0">,</span>
+            <span class="s1">self.j * other</span><span class="s0">,</span>
+            <span class="s1">self.k * other</span>
+        <span class="s1">)</span>
+
+    <span class="s0">def </span><span class="s1">is_zero(self):</span>
+        <span class="s2">&quot;&quot;&quot;Is it the zero vector?&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">self.i == </span><span class="s3">0 </span><span class="s0">and </span><span class="s1">self.j == </span><span class="s3">0 </span><span class="s0">and </span><span class="s1">self.k == </span><span class="s3">0</span>
+
+    <span class="s0">def </span><span class="s1">to_string(self):</span>
+        <span class="s0">return </span><span class="s4">f&quot;&lt;</span><span class="s0">{</span><span class="s1">self.i</span><span class="s0">}</span><span class="s4">, </span><span class="s0">{</span><span class="s1">self.j</span><span class="s0">}</span><span class="s4">, </span><span class="s0">{</span><span class="s1">self.k</span><span class="s0">}</span><span class="s4">&gt;&quot;</span>
+
+    <span class="s0">def </span><span class="s1">cross(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Cross product of your vector and another vector.&quot;&quot;&quot;</span>
+        <span class="s1">new_i = self.j * other.k - self.k * other.j</span>
+        <span class="s1">new_j = self.k * other.i - self.i * other.k</span>
+        <span class="s1">new_k = self.i * other.j - self.j * other.i</span>
+        <span class="s0">return </span><span class="s1">Vector(new_i</span><span class="s0">, </span><span class="s1">new_j</span><span class="s0">, </span><span class="s1">new_k)</span>
+
+    <span class="s0">def </span><span class="s1">dot(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Dot product of your vector and another vector.&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">self.i * other.i + self.j * other.j + self.k * other.k</span>
+
+    <span class="s0">def </span><span class="s1">abs(self):</span>
+        <span class="s2">&quot;&quot;&quot;Length&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">pow((pow(self.i</span><span class="s0">, </span><span class="s3">2</span><span class="s1">) + pow(self.j</span><span class="s0">, </span><span class="s3">2</span><span class="s1">) + pow(self.k</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span><span class="s0">, </span><span class="s3">.5</span><span class="s1">)</span>
+
+    <span class="s0">def </span><span class="s1">unit(self):</span>
+        <span class="s2">&quot;&quot;&quot;Returns a unit vector in the same direction as your vector.&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">Vector(self.i / self.abs()</span><span class="s0">, </span><span class="s1">self.j / self.abs()</span><span class="s0">, </span><span class="s1">self.k / self.abs())</span>
+
+    <span class="s0">def </span><span class="s1">scalar_proj(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Returns the length of another vector projected onto yours.&quot;&quot;&quot;</span>
+        <span class="s1">dp = self.dot(other)</span>
+        <span class="s0">if </span><span class="s1">(self.abs() != </span><span class="s3">0</span><span class="s1">):</span>
+            <span class="s0">return </span><span class="s1">dp / self.abs()</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s0">return </span><span class="s3">0</span>
+
+    <span class="s0">def </span><span class="s1">vector_proj(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Returns another vector projected onto yours.&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">self.unit() * self.scalar_proj(other)</span>
+
+    <span class="s0">def </span><span class="s1">angle_from(self</span><span class="s0">, </span><span class="s1">other):</span>
+        <span class="s2">&quot;&quot;&quot;Returns the angle between your vector and another vector.&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">acos(self.dot(other) / (self.abs() * other.abs()))</span>
+
+
+<span class="s1">a = Vector(</span><span class="s3">1</span><span class="s0">, </span><span class="s3">2</span><span class="s0">, </span><span class="s3">3</span><span class="s1">)</span>
+<span class="s1">b = Vector(</span><span class="s3">10</span><span class="s0">, </span><span class="s3">11</span><span class="s0">, </span><span class="s3">12</span><span class="s1">)</span>
+
+<span class="s1">print((a + b).to_string())</span>
+<span class="s1">print(a.abs())</span>
+<span class="s1">print((a * </span><span class="s3">4</span><span class="s1">).to_string())</span>
+<span class="s1">print(a.dot(b))</span>
+<span class="s1">print(a.to_string())</span>
+<span class="s1">print(a.cross(b).to_string())</span>
+<span class="s1">print(a.vector_proj(b).to_string())</span>
+<span class="s1">print(a.angle_from(b))</span></pre>
+</body>
+</html>

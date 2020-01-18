@@ -1,0 +1,195 @@
+<html>
+<head>
+<title>Calculator.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+.s5 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Calculator.py</font>
+</center></td></tr></table>
+<pre><span class="s0">class </span><span class="s1">Single_Var_Function:</span>
+    <span class="s2">&quot;&quot;&quot; 
+    A mathematical function object, in the form f(x) = so and so. 
+    func(function): a continuously differentiable function which takes one numerical argument.&quot;&quot;&quot;</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">, </span><span class="s1">func):</span>
+        <span class="s1">self.func = func</span>
+
+    <span class="s0">def </span><span class="s1">value_at(self</span><span class="s0">, </span><span class="s1">x):</span>
+        <span class="s2">&quot;&quot;&quot; 
+        Protects the program against divisions by 0. 
+        You can still use functions like f(x) = 1/x, just keep 0 out of your domain.&quot;&quot;&quot;</span>
+
+        <span class="s1">return_val = </span><span class="s3">0</span>
+        <span class="s0">try</span><span class="s1">:</span>
+            <span class="s1">return_val = self.func(x)</span>
+        <span class="s0">except </span><span class="s1">ZeroDivisionError:</span>
+            <span class="s1">print(</span><span class="s4">&quot;Your function is not continuous!&quot;</span><span class="s1">)  </span><span class="s5"># need I remind you?</span>
+        <span class="s0">return </span><span class="s1">return_val</span>
+
+    <span class="s0">def </span><span class="s1">aroc(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2):</span>
+        <span class="s2">&quot;&quot;&quot;Average rate of change&quot;&quot;&quot;</span>
+
+        <span class="s0">if </span><span class="s1">x1 == x2:</span>
+            <span class="s0">return </span><span class="s3">0</span>
+        <span class="s0">elif </span><span class="s1">x2 &lt; x1:</span>
+            <span class="s1">x1</span><span class="s0">, </span><span class="s1">x2 = x2</span><span class="s0">, </span><span class="s1">x1</span>
+
+        <span class="s0">return </span><span class="s1">(self.value_at(x2) - self.value_at(x1)) / (x2 - x1)</span>
+
+    <span class="s0">def </span><span class="s1">derivative_at(self</span><span class="s0">, </span><span class="s1">x):</span>
+        <span class="s2">&quot;&quot;&quot;A symmetric difference quotient with a very small difference.&quot;&quot;&quot;</span>
+        <span class="s0">return </span><span class="s1">self.aroc(x - </span><span class="s3">.000001</span><span class="s0">, </span><span class="s1">x + </span><span class="s3">.000001</span><span class="s1">)</span>
+
+    <span class="s0">def </span><span class="s1">derivative(self):</span>
+        <span class="s0">return </span><span class="s1">Single_Var_Function(</span><span class="s0">lambda </span><span class="s1">x: self.derivative_at(x))</span>
+
+    <span class="s0">def </span><span class="s1">mid_rectangle(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2):</span>
+        <span class="s1">length = x2 - x1</span>
+        <span class="s1">height = self.value_at(x1 + (x2 - x1) / </span><span class="s3">2</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">length * height</span>
+
+    <span class="s0">def </span><span class="s1">left_rectangle(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2):</span>
+        <span class="s1">length = x2 - x1</span>
+        <span class="s1">height = self.value_at(x1)</span>
+        <span class="s0">return </span><span class="s1">length * height</span>
+
+    <span class="s0">def </span><span class="s1">right_rectangle(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2):</span>
+        <span class="s1">length = x2 - x1</span>
+        <span class="s1">height = self.value_at(x2)</span>
+        <span class="s0">return </span><span class="s1">length * height;</span>
+
+    <span class="s0">def </span><span class="s1">left_riemann(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2</span><span class="s0">, </span><span class="s1">steps):</span>
+        <span class="s2">&quot;&quot;&quot; 
+        Underestimates when the function is increasing, overestimates when the function is decreasing. 
+        More steps lead to greater accuracy. &quot;&quot;&quot;</span>
+
+        <span class="s1">interval = (x2 - x1) / steps</span>
+        <span class="s1">total = </span><span class="s3">0</span>
+        <span class="s0">for </span><span class="s1">s </span><span class="s0">in </span><span class="s1">range(</span><span class="s3">0</span><span class="s0">, </span><span class="s1">steps):</span>
+            <span class="s1">total += self.left_rectangle(x1 + (s * interval)</span><span class="s0">, </span><span class="s1">x1 + ((s + </span><span class="s3">1</span><span class="s1">) * interval))</span>
+        <span class="s0">return </span><span class="s1">total</span>
+
+    <span class="s0">def </span><span class="s1">right_riemann(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2</span><span class="s0">, </span><span class="s1">steps):</span>
+        <span class="s2">&quot;&quot;&quot; 
+        Overestimates when the function is increasing, underestimates when the function is decreasing. 
+        More steps leads to greater accuracy.&quot;&quot;&quot;</span>
+
+        <span class="s1">interval = (x2 - x1) / steps</span>
+        <span class="s1">total = </span><span class="s3">0</span>
+        <span class="s0">for </span><span class="s1">s </span><span class="s0">in </span><span class="s1">range(</span><span class="s3">0</span><span class="s0">, </span><span class="s1">steps):</span>
+            <span class="s1">total += self.right_rectangle(x1 + (s * interval)</span><span class="s0">, </span><span class="s1">x1 + ((s + </span><span class="s3">1</span><span class="s1">) * interval))</span>
+        <span class="s0">return </span><span class="s1">total</span>
+
+    <span class="s0">def </span><span class="s1">mid_riemann(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2</span><span class="s0">, </span><span class="s1">steps):</span>
+        <span class="s2">&quot;&quot;&quot; 
+        Probably your most accurate choice for a definite integral.&quot;&quot;&quot;</span>
+        <span class="s1">interval = (x2 - x1) / steps</span>
+        <span class="s1">total = </span><span class="s3">0</span>
+        <span class="s0">for </span><span class="s1">s </span><span class="s0">in </span><span class="s1">range(</span><span class="s3">0</span><span class="s0">, </span><span class="s1">steps):</span>
+            <span class="s1">total += self.mid_rectangle(x1 + (s * interval)</span><span class="s0">, </span><span class="s1">x1 + ((s + </span><span class="s3">1</span><span class="s1">) * interval))</span>
+        <span class="s0">return </span><span class="s1">total</span>
+
+    <span class="s0">def </span><span class="s1">length(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2):</span>
+        <span class="s0">return </span><span class="s1">pow((pow((x2 - x1)</span><span class="s0">, </span><span class="s3">2</span><span class="s1">) + pow(self.value_at(x2) - self.value_at(x1)</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span><span class="s0">, </span><span class="s3">0.5</span><span class="s1">)</span>
+
+    <span class="s0">def </span><span class="s1">arc_length(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2</span><span class="s0">, </span><span class="s1">steps):</span>
+        <span class="s2">&quot;&quot;&quot;Calculates the length of your curve.&quot;&quot;&quot;</span>
+        <span class="s1">interval = (x2 - x1) / steps</span>
+        <span class="s1">total = </span><span class="s3">0</span>
+        <span class="s0">for </span><span class="s1">s </span><span class="s0">in </span><span class="s1">range(</span><span class="s3">0</span><span class="s0">, </span><span class="s1">steps):</span>
+            <span class="s1">total += self.length(x1 + s * interval</span><span class="s0">, </span><span class="s1">x1 + (s + </span><span class="s3">1</span><span class="s1">) * interval)</span>
+        <span class="s0">return </span><span class="s1">total</span>
+
+    <span class="s0">def </span><span class="s1">surface_of_revolution(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2</span><span class="s0">, </span><span class="s1">steps):</span>
+        <span class="s2">&quot;&quot;&quot;Calculates the surface area if your curve revolved around the x axis.&quot;&quot;&quot;</span>
+
+        <span class="s1">interval = (x2 - x1) / steps</span>
+        <span class="s1">total = </span><span class="s3">0</span>
+        <span class="s0">for </span><span class="s1">s </span><span class="s0">in </span><span class="s1">range(</span><span class="s3">0</span><span class="s0">, </span><span class="s1">steps):</span>
+            <span class="s1">total += self.length(x1 + s * interval</span><span class="s0">, </span><span class="s1">x1 + (s + </span><span class="s3">1</span><span class="s1">) * interval) * self.value_at(x1 + s * interval)</span>
+        <span class="s0">return </span><span class="s1">total * </span><span class="s3">2 </span><span class="s1">* </span><span class="s3">3.14159</span>
+
+    <span class="s0">def </span><span class="s1">volume_of_revolution(self</span><span class="s0">, </span><span class="s1">x1</span><span class="s0">, </span><span class="s1">x2</span><span class="s0">, </span><span class="s1">steps):</span>
+        <span class="s2">&quot;&quot;&quot;Calculates the volume if your curve revolved around the x axis.&quot;&quot;&quot;</span>
+
+        <span class="s1">interval = (x2 - x1) / steps</span>
+        <span class="s1">total = </span><span class="s3">0</span>
+        <span class="s0">for </span><span class="s1">s </span><span class="s0">in </span><span class="s1">range(</span><span class="s3">0</span><span class="s0">, </span><span class="s1">steps):</span>
+            <span class="s1">total += interval * pow(self.value_at(x1 + s * interval)</span><span class="s0">, </span><span class="s3">2</span><span class="s1">)</span>
+        <span class="s0">return </span><span class="s1">total * </span><span class="s3">3.14159</span>
+
+
+<span class="s0">class </span><span class="s1">Two_Var_Function:</span>
+    <span class="s2">&quot;&quot;&quot;A function in the form f(x, y) = so and so. So far, we only have partial derivatives for this one.&quot;&quot;&quot;</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">, </span><span class="s1">xyfunc):</span>
+        <span class="s1">self.xyfunc = xyfunc</span>
+
+    <span class="s0">def </span><span class="s1">df_dx_at(self</span><span class="s0">, </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y):</span>
+        <span class="s1">constant_y = Single_Var_Function(</span><span class="s0">lambda </span><span class="s1">a: (self.value_at(a</span><span class="s0">, </span><span class="s1">y)))</span>
+        <span class="s0">return </span><span class="s1">constant_y.derivative_at(x)</span>
+
+    <span class="s0">def </span><span class="s1">df_dx(self):</span>
+        <span class="s0">return lambda </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y: self.df_dx_at(x</span><span class="s0">, </span><span class="s1">y)</span>
+
+    <span class="s0">def </span><span class="s1">df_dy(self):</span>
+        <span class="s0">return lambda </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y: self.df_dy_at(x</span><span class="s0">, </span><span class="s1">y)</span>
+
+    <span class="s0">def </span><span class="s1">df_dy_at(self</span><span class="s0">, </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y):</span>
+        <span class="s1">constant_x = Single_Var_Function(</span><span class="s0">lambda </span><span class="s1">a: (self.value_at(x</span><span class="s0">, </span><span class="s1">a)))</span>
+        <span class="s0">return </span><span class="s1">constant_x.derivative_at(y)</span>
+
+    <span class="s0">def </span><span class="s1">value_at(self</span><span class="s0">, </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y):</span>
+        <span class="s2">&quot;&quot;&quot; 
+        Protects the program against divisions by 0. 
+        You can still use functions like f(x,y) = 1/xy; just keep (0,0) out of your domain.&quot;&quot;&quot;</span>
+
+        <span class="s1">return_val = </span><span class="s3">0</span>
+        <span class="s0">try</span><span class="s1">:</span>
+            <span class="s1">return_val = self.xyfunc(x</span><span class="s0">, </span><span class="s1">y)</span>
+        <span class="s0">except </span><span class="s1">ZeroDivisionError:</span>
+            <span class="s1">print(</span><span class="s4">&quot;Your function doesn't seem to exist at that point.&quot;</span><span class="s1">)  </span><span class="s5"># We're doing our best here.</span>
+        <span class="s0">return </span><span class="s1">return_val</span>
+
+
+<span class="s1">print()</span>
+<span class="s1">line = Single_Var_Function(</span><span class="s0">lambda </span><span class="s1">x: x)</span>
+<span class="s1">print(</span><span class="s4">&quot;f(x) = x&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Derivative at 3: </span><span class="s0">{</span><span class="s1">line.derivative_at(</span><span class="s3">3</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Mid riemann with three steps from 0 to 3: </span><span class="s0">{</span><span class="s1">line.mid_riemann(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s0">, </span><span class="s3">3</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Left riemann with thirty steps from 0 to 3: </span><span class="s0">{</span><span class="s1">line.mid_riemann(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s0">, </span><span class="s3">30</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Arc length from x = 0 to x = 3: </span><span class="s0">{</span><span class="s1">line.arc_length(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s0">, </span><span class="s3">20</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Surface area of right cone with radius 3:</span><span class="s0">{</span><span class="s1">line.surface_of_revolution(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s0">, </span><span class="s3">90</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Volume of right cone with radius 3: </span><span class="s0">{</span><span class="s1">line.volume_of_revolution(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s0">, </span><span class="s3">90</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print()</span>
+
+<span class="s1">quad = Single_Var_Function(</span><span class="s0">lambda </span><span class="s1">x: pow(x</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span>
+<span class="s1">print(</span><span class="s4">&quot;f(x) = x^2&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Derivative at x = 3: </span><span class="s0">{</span><span class="s1">quad.derivative_at(</span><span class="s3">3</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Mid riemann from 0 to 3 with thirty steps: </span><span class="s0">{</span><span class="s1">quad.mid_riemann(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s0">, </span><span class="s3">30</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print(</span><span class="s4">f&quot;Arc length from 0 to 3: </span><span class="s0">{</span><span class="s1">quad.arc_length(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">3</span><span class="s0">, </span><span class="s3">30</span><span class="s1">)</span><span class="s0">}</span><span class="s4">&quot;</span><span class="s1">)</span>
+<span class="s1">print()</span>
+
+<span class="s1">y_x_squared = Two_Var_Function(</span><span class="s0">lambda </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y: y * pow(x</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span>
+<span class="s1">print(</span><span class="s4">&quot;f(x,y) = yx^2&quot;</span><span class="s1">)</span>
+<span class="s1">print(y_x_squared.df_dx_at(</span><span class="s3">1</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span>
+<span class="s1">print(y_x_squared.df_dy_at(</span><span class="s3">2</span><span class="s0">, </span><span class="s3">0</span><span class="s1">))</span>
+<span class="s1">print()</span>
+
+<span class="s1">y_squared_x_squared = Two_Var_Function(</span><span class="s0">lambda </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y: pow(y</span><span class="s0">, </span><span class="s3">2</span><span class="s1">) * pow(x</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span>
+<span class="s1">print(</span><span class="s4">&quot;f(x,y) = y^2 * x^2&quot;</span><span class="s1">)</span>
+<span class="s1">print(y_squared_x_squared.df_dx_at(</span><span class="s3">3</span><span class="s0">, </span><span class="s3">2</span><span class="s1">))</span>
+</pre>
+</body>
+</html>

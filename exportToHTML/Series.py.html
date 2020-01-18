@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Series.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Series.py</font>
+</center></td></tr></table>
+<pre><span class="s0">class </span><span class="s1">Series:</span>
+    <span class="s2">&quot;&quot;&quot; 
+    A series. 
+    :param combiner(function): Must take two parameters. This combines up all the terms in your series. 
+    :param operator(function): Takes one parameter. This is what you want the 'nth' term to be. &quot;&quot;&quot;</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">, </span><span class="s1">combiner</span><span class="s0">, </span><span class="s1">operator):</span>
+        <span class="s0">assert </span><span class="s1">isinstance(combiner</span><span class="s0">, </span><span class="s1">object)</span>
+        <span class="s0">assert </span><span class="s1">isinstance(operator</span><span class="s0">, </span><span class="s1">object)</span>
+        <span class="s1">self.operator = operator</span>
+        <span class="s1">self.combiner = combiner</span>
+
+    <span class="s0">def </span><span class="s1">nth_term(self</span><span class="s0">, </span><span class="s1">n):</span>
+        <span class="s0">return </span><span class="s1">self.operator(n)</span>
+
+    <span class="s0">def </span><span class="s1">compute(self</span><span class="s0">, </span><span class="s1">k</span><span class="s0">, </span><span class="s1">terms):</span>
+        <span class="s0">return </span><span class="s1">sum_down(self.combiner</span><span class="s0">, </span><span class="s1">self.operator</span><span class="s0">, </span><span class="s1">k</span><span class="s0">, </span><span class="s1">terms - </span><span class="s3">1</span><span class="s0">, </span><span class="s1">self.operator(terms))</span>
+
+    <span class="s0">def </span><span class="s1">change_operator(self</span><span class="s0">, </span><span class="s1">new_op):</span>
+        <span class="s0">assert </span><span class="s1">isinstance(new_op</span><span class="s0">, </span><span class="s1">object)</span>
+        <span class="s1">self.operator = new_op</span>
+
+    <span class="s0">def </span><span class="s1">change_combiner(self</span><span class="s0">, </span><span class="s1">new_comb):</span>
+        <span class="s0">assert </span><span class="s1">isinstance(new_comb</span><span class="s0">, </span><span class="s1">object)</span>
+        <span class="s1">self.combiner = new_comb</span>
+
+
+<span class="s0">def </span><span class="s1">sum_down(combiner1</span><span class="s0">, </span><span class="s1">operator1</span><span class="s0">, </span><span class="s1">k</span><span class="s0">, </span><span class="s1">n</span><span class="s0">, </span><span class="s1">total):</span>
+    <span class="s2">&quot;&quot;&quot;Uses the combiner to combine all the terms from n to k, with each term altered by the operator.&quot;&quot;&quot;</span>
+
+    <span class="s0">if </span><span class="s1">n == </span><span class="s3">0</span><span class="s1">:</span>
+        <span class="s0">return </span><span class="s1">combiner1(operator1(k)</span><span class="s0">, </span><span class="s1">total)</span>
+    <span class="s0">else</span><span class="s1">:</span>
+        <span class="s0">return </span><span class="s1">sum_down(combiner1</span><span class="s0">, </span><span class="s1">operator1</span><span class="s0">, </span><span class="s1">k</span><span class="s0">, </span><span class="s1">n - </span><span class="s3">1</span><span class="s0">, </span><span class="s1">combiner1(operator1(n)</span><span class="s0">, </span><span class="s1">total))</span>
+
+
+<span class="s0">class </span><span class="s1">Recursive_Sequence:</span>
+    <span class="s2">&quot;&quot;&quot; 
+    A recursive sequence, defined only by how the next term relates to the two previous ones. 
+    Next_term(function): takes two inputs.&quot;&quot;&quot;</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">, </span><span class="s1">next_term):</span>
+        <span class="s0">assert </span><span class="s1">isinstance(next_term</span><span class="s0">, </span><span class="s1">object)</span>
+        <span class="s1">self.next_term = next_term</span>
+
+    <span class="s0">def </span><span class="s1">nth_term(self</span><span class="s0">, </span><span class="s1">term1</span><span class="s0">, </span><span class="s1">term2</span><span class="s0">, </span><span class="s1">n):</span>
+        <span class="s2">&quot;&quot;&quot; 
+        Calculates the nth term in a recursive series, given the first two terms. 
+        Previously recorded values are stored in a dictionary, to speed up the process. 
+        &quot;&quot;&quot;</span>
+
+        <span class="s1">dictionary = []</span>
+
+        <span class="s0">def </span><span class="s1">compute_term(t1</span><span class="s0">, </span><span class="s1">t2</span><span class="s0">, </span><span class="s1">n):</span>
+            <span class="s0">if </span><span class="s1">dictionary.__contains__(self.next_term(t1</span><span class="s0">, </span><span class="s1">t2)):</span>
+                <span class="s0">return </span><span class="s1">dictionary(n)</span>
+            <span class="s0">elif </span><span class="s1">n &lt;= </span><span class="s3">2</span><span class="s1">:</span>
+                <span class="s0">return </span><span class="s1">self.next_term(t1</span><span class="s0">, </span><span class="s1">t2)</span>
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s1">t = compute_term(t2</span><span class="s0">, </span><span class="s1">self.next_term(t1</span><span class="s0">, </span><span class="s1">t2)</span><span class="s0">, </span><span class="s1">n - </span><span class="s3">1</span><span class="s1">)</span>
+                <span class="s1">dictionary.insert(n</span><span class="s0">, </span><span class="s1">t)</span>
+                <span class="s0">return </span><span class="s1">t</span>
+
+        <span class="s0">return </span><span class="s1">compute_term(term1</span><span class="s0">, </span><span class="s1">term2</span><span class="s0">, </span><span class="s1">n)</span>
+
+
+<span class="s1">arith = Series(</span><span class="s0">lambda </span><span class="s1">a</span><span class="s0">, </span><span class="s1">b: (a + b)</span><span class="s0">, lambda </span><span class="s1">n: n)</span>
+<span class="s1">print(arith.compute(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">5</span><span class="s1">))</span>
+
+<span class="s1">geom_half = Series(</span><span class="s0">lambda </span><span class="s1">a</span><span class="s0">, </span><span class="s1">b: (a + b)</span><span class="s0">, lambda </span><span class="s1">n: pow(</span><span class="s3">0.5</span><span class="s0">, </span><span class="s1">n))</span>
+<span class="s1">print(geom_half.compute(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">10</span><span class="s1">))</span>
+
+<span class="s1">factorial = Series(</span><span class="s0">lambda </span><span class="s1">a</span><span class="s0">, </span><span class="s1">b: (a * b)</span><span class="s0">, lambda </span><span class="s1">n: n)</span>
+<span class="s1">print(factorial.compute(</span><span class="s3">1</span><span class="s0">, </span><span class="s3">5</span><span class="s1">))</span>
+
+<span class="s1">fibonacci = Recursive_Sequence(</span><span class="s0">lambda </span><span class="s1">a</span><span class="s0">, </span><span class="s1">b: (a + b))</span>
+<span class="s1">print(fibonacci.nth_term(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">5</span><span class="s1">))</span>
+<span class="s1">print(fibonacci.nth_term(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">1</span><span class="s0">, </span><span class="s3">10</span><span class="s1">))</span>
+</pre>
+</body>
+</html>
