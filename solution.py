@@ -1,6 +1,7 @@
 def y(x):
     return (1_000_000 - 2000 * x) / (2000 - 2 * x)
-
+"""
+"""
 
 def solve():
     for i in range(0, 500):

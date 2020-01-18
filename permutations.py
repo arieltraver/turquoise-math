@@ -25,7 +25,7 @@ def convert_to_answer(swaps, li):
         saved = li[i]
         li[i] = li[i + swaps[i]]
         li.insert(i + 1, saved)
-        del(li[i + swaps[i] + 1])
+        del (li[i + swaps[i] + 1])
     return li
 
 
@@ -39,6 +39,7 @@ def find_permutation(string, n):
     return convert_to_answer(swaps, list(string))
 
 
-print(find_permutation("0123456789", 1000000))
-print(find_permutation("ABCDEFG", 3))
-print(find_permutation(("tiny", "small", "medium", "large", "huge"), 12))
+if __name__ == '__main__':
+    print(find_permutation("0123456789", 1000000))
+    print(find_permutation("ABCDEFG", 3))
+    print(find_permutation(("tiny", "small", "medium", "large", "huge"), 12))
