@@ -7,6 +7,7 @@ def comb2(n):
 
 
 def comb5(n):
+    """How many ways are there to make (n) pence with 5p, 2p, and 1p coins?"""
     total = 0
     for i in range(0, math.ceil(n / 5)):
         total += comb2(n - 5 * i)
@@ -17,6 +18,7 @@ def comb5(n):
 
 
 def comb10(n):
+    """How many ways are there to make (n) pence with 10p, 5p, 2p, and 1p coins?"""
     total = 0
     for i in range(0, math.ceil(n / 10)):
         total += comb5(n - 10 * i)
@@ -27,6 +29,7 @@ def comb10(n):
 
 
 def comb20(n):
+    """How many ways are there to make (n) pence with 20p, 10p, 5p, 2p, and 1p coins?"""
     total = 0
     for i in range(0, math.ceil(n / 20)):
         total += comb10(n - 20 * i)
@@ -36,6 +39,7 @@ def comb20(n):
 
 
 def comb50(n):
+    """How many ways are there to make (n) pence with 50p, 20p, 10p, 5p, 2p, and 1p coins?"""
     total = 0
     for i in range(0, math.ceil(n / 50)):
         total += comb20(n - 50 * i)
@@ -45,6 +49,7 @@ def comb50(n):
 
 
 def comb100(n):
+    """How many ways are there to make (n) pence with 100p, 50p, 20p, 10p, 5p, 2p, and 1p coins?"""
     total = 0
     for i in range(0, math.ceil(n / 100)):
         total += comb50(n - 100 * i)
