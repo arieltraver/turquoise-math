@@ -54,5 +54,5 @@ def check_answers(small, big):
 find_prime(1229)
 print(prime_list)
 generate_goldbach(10001)
-print(wrong_answers)
+print(wrong_answers[0:10000])
 print(check_answers(3, 10000))
