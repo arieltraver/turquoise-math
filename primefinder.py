@@ -2,8 +2,6 @@ prime_list = [2, 3, 5, 7, 11, 13]
 
 
 def find_prime(n):
-    import time
-    start = time.time()
     prime_count = len(prime_list)
     if prime_count >= n:
         return prime_list[n - 1]
@@ -22,8 +20,6 @@ def find_prime(n):
                 prime_count += 1
             current_number += 2
             factor_found = False
-    elapsed = (time.time() - start)
-    print(f"Found in {elapsed} seconds")
     return prime_list[n - 1]
 
 
