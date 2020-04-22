@@ -55,14 +55,14 @@ public class Graphs {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		LinkedList<Integer>[] GraphEx = makeGraph("/Users/arieltraver/Desktop/ all/AP CS/AP Java/CS231/src/unit1/GraphExample.txt");
+		/**LinkedList<Integer>[] GraphEx = makeGraph("INSERT_GRAPH_HERE.txt");
 		for(int i = 0; i < GraphEx.length; i++) {
 			ListIterator itr = GraphEx[i].listIterator(0);
 			while(itr.hasNext()) {
 				System.out.print(itr.next() + " ");
 			}
 			System.out.println();
-		}
-		System.out.println(getConnectorNode("/Users/arieltraver/Desktop/ all/AP CS/AP Java/CS231/src/unit1/GraphExample.txt", 0, 5));
+		}**/
+		//System.out.println(getConnectorNode("INSERT_GRAPH_HERE.txt", 0, 5));
 	}
 }
